@@ -10,7 +10,7 @@ Durante el semestre se desarrollarán ejercicios y proyectos en **lenguaje ensam
   Carpeta destinada a almacenar los distintos laboratorios realizados durante el curso.  
 
 - **Trabajo-Matriz**  
-  Desarrollo de prácticas con la matriz de LEDs y otros ejercicios complementarios.  
+  Desarrollo de prácticas con la matriz de LEDs. 
 
 ---
 
