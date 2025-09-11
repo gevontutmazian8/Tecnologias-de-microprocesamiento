@@ -22,7 +22,6 @@ El propósito de este repositorio es centralizar el material trabajado en clase 
 ## 👥 Autores
 - Joaquín Utmazian  
 - David Alvarez  
-- Gastón Breventano  
 
 ---
 
