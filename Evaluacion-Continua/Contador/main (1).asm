@@ -1,11 +1,18 @@
+;
+; AssemblerApplication3.asm
+;
+; Created: 12/9/2025 01:54:27
+; Author : joaco
+;
+
 ; ============================================================
-;  Contador 7 segmentos (cátodo común) – Ensamblador AVR
+;  Contador 7 segmentos (cÃ¡todo comÃºn) â€“ Ensamblador AVR
 ;  MCU: ATmega328P (Arduino Uno)
 ;  F_CPU = 16 MHz (ajusta delay_1ms si difiere)
-; Lógica:
+; LÃ³gica:
 ;  - Si PB0 se presiona (nivel bajo), cuenta 0..9 mostrando cada 1 s.
-;  - Si PB1 se presiona durante el conteo, espera que se suelte y “rompe”.
-;  - Cuando no está contando, muestra el valor actual.
+;  - Si PB1 se presiona durante el conteo, espera que se suelte y â€œrompeâ€.
+;  - Cuando no estÃ¡ contando, muestra el valor actual.
 ;  - Si counter >= 10, se resetea a 0.
 ; ============================================================
 
@@ -27,7 +34,7 @@
         .def rI1     = r19
 
 ; ------------------------------------------------------------
-; Tabla LUT (PROGMEM) – orden de bits: g f e d c b a (PD7..PD1)
+; Tabla LUT (PROGMEM) â€“ orden de bits: g f e d c b a (PD7..PD1)
 ; Mismos valores que tu C
 ; ------------------------------------------------------------
         .cseg
@@ -35,7 +42,6 @@
 
 rjmp    RESET                           ; Vector reset
 
-; (Si necesitás otros vectores, agregalos. Por simplicidad, saltan a RESET)
         .org INT0addr
 rjmp    RESET
 
@@ -75,8 +81,8 @@ RESET:
 ; ------------------------------------------------------------
 MAIN_LOOP:
         ; if (!(PINB & (1<<PB0)))  -> si START presionado (nivel bajo)
-        sbic    PINB, BTN_START_BIT        ; Salta si bit está en 0 (presionado)
-        rjmp    NO_START                   ; Si no está presionado, mostrar counter
+        sbic    PINB, BTN_START_BIT        ; Salta si bit estÃ¡ en 0 (presionado)
+        rjmp    NO_START                   ; Si no estÃ¡ presionado, mostrar counter
 
         ; --- START presionado: bucle de conteo 0..9 ---
         clr     rCnt                       ; counter = 0
@@ -86,14 +92,14 @@ COUNT_LOOP:
         sbic    PINB, BTN_STOP_BIT         ; Salta si PB1 = 0 (presionado)
         rjmp    SHOW_AND_DELAY             ; Si no presionado, continuar
 
-        ; Aquí: STOP presionado (nivel bajo) -> esperar a que se suelte
+        ; AquÃ­: STOP presionado (nivel bajo) -> esperar a que se suelte
 WAIT_RELEASE:
         sbis    PINB, BTN_STOP_BIT         ; Salta si PB1 = 1 (liberado)
         rjmp    WAIT_RELEASE
         rjmp    AFTER_COUNT                ; Romper el conteo (como break)
 
 SHOW_AND_DELAY:
-        ; Mostrar dígito actual (PORTD = lut[counter])
+        ; Mostrar dÃ­gito actual (PORTD = lut[counter])
         rcall   DISPLAY_COUNTER
 
         ; delay_ms(1000)
@@ -106,12 +112,12 @@ SHOW_AND_DELAY:
         cpi     rCnt, 10
         brlo    COUNT_LOOP                 ; mientras rCnt < 10
 
-        ; Terminó conteo normal (llegó a 10)
+        ; TerminÃ³ conteo normal (llegÃ³ a 10)
         ; cae a AFTER_COUNT
 AFTER_COUNT:
         rjmp    POST_SHOW
 
-; --- No se presionó START: mostrar el valor actual y gestionar reset ---
+; --- No se presionÃ³ START: mostrar el valor actual y gestionar reset ---
 NO_START:
         rcall   DISPLAY_COUNTER
 
@@ -124,7 +130,7 @@ POST_SHOW:
 
 ; ------------------------------------------------------------
 ; Subrutina: DISPLAY_COUNTER
-;  Usa Z para apuntar a LUT + counter, LPM, OUT PORTD
+;  Usamos Z para apuntar a LUT + counter, LPM, OUT PORTD
 ;  Clobbers: rTmp (r16), Z (r30:r31)
 ; ------------------------------------------------------------
 DISPLAY_COUNTER:
@@ -164,13 +170,12 @@ DELAY_MS_DONE:
 
 ; ------------------------------------------------------------
 ; Subrutina: DELAY_1MS (aprox. para 16 MHz)
-;  Ajustá los contadores si tu F_CPU difiere.
+;  AjustÃ¡ los contadores si tu F_CPU difiere.
 ;  Clobbers: rI0, rI1
 ; ------------------------------------------------------------
 DELAY_1MS:
-        ; Aproximación común ~1ms @16MHz
-        ; Dos bucles anidados: valores calibrados empíricamente
-        ; (No “perfecto a ciclo”, pero suficiente para 1 s visible)
+        ; AproximaciÃ³n comÃºn ~1ms @16MHz
+        ; Dos bucles anidados: valores calibrados empÃ­ricamente
         ldi     rI0, 250
         ldi     rI1, 61
 .D1_LOOP0:
@@ -183,7 +188,7 @@ DELAY_1MS:
 ; ------------------------------------------------------------
 ; LUT en Flash (PROGMEM)
 ;  Orden: g f e d c b a  (PD7..PD1)
-;  Valores idénticos al C original
+;  Valores idÃ©nticos al C original
 ; ------------------------------------------------------------
         .align  1
 LUT:
