@@ -46,3 +46,26 @@
 .cseg
 .org 0x0000
     rjmp main         ; al arrancar salta al main
+
+; ----------------------------
+; Rutina main / setup de puertos
+; ----------------------------
+main:
+
+    ; --- motores como salida ---
+    ; CINTA_IN1 → PD6 → DDRD6
+    sbi DDRD, CINTA_IN1
+
+    ; CINTA_IN2 → pin 9 → PB1 → DDRB1
+    sbi DDRB, 1      ; CINTA_IN2 es PB1
+
+    ; PUNZON_IN1 → pin 10 → PB2
+    sbi DDRB, 2
+
+    ; PUNZON_IN2 → pin 11 → PB3
+    sbi DDRB, 3
+
+    ; --- LEDs como salida ---
+    ; LEDs están en PC0..PC5
+    ldi r30, (1<<PC0)|(1<<PC1)|(1<<PC2)|(1<<PC3)|(1<<PC4)|(1<<PC5)
+    out DDRC, r30
