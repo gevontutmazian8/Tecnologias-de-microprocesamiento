@@ -1,0 +1,51 @@
+CÁLCULOS DE CONSUMO - GRUPO 2
+
+Consumos por Componente:
+
+Microcontrolador:
+- Modo Activo: 18 mA
+- Modo Idle: 6.5 mA  
+- Modo ADC: 1.8 mA
+- Modo Power Down: 0.1 mA
+
+LEDs + resistencias 220 Ohm:
+- Cada LED: 3 mA
+- Total LEDs: 15 mA
+
+Consumo por Modo:
+
+Modo 0 - Activo:
+- Atmega: 18 mA
+- LEDs: 15 mA
+- TOTAL: 33 mA
+
+Modo 1 - Idle:
+- Atmega: 6.5 mA
+- LEDs: 0 mA
+- TOTAL: 6.5 mA
+
+Modo 2 - ADC Noise Reduction:
+- Atmega: 1.8 mA
+- LEDs: 0 mA
+- TOTAL: 1.8 mA
+
+Modo 3 - Power Down:
+- MCU: 0.1 mA
+- LEDs: 0 mA
+- TOTAL: 0.1 mA
+
+Cálculo para 7 Horas:
+
+Energía por Ciclo Completo:
+- Modo 0: 33mA × 30s = 990 mA·s
+- Modo 1: 6.5mA × 30s = 195 mA·s
+- Modo 2: 1.8mA × 30s = 54 mA·s  
+- Modo 3: 0.1mA × 30s = 3 mA·s
+- Total/ciclos: 1242 mA·s = 0.345 mAh
+
+Ciclos en 7 horas:
+- 7 horas × 3600 s/h = 25200 segundos
+- 7200 s ÷ 120 s/ciclo = 210 ciclos
+
+Energía Total:
+- 210 ciclos × 0.345 mAh/ciclo = 72.45 mAh
