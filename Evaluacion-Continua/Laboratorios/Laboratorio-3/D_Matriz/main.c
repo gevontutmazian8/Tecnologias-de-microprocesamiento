@@ -8,23 +8,21 @@
 #define BOTON_PIN 2
 #define CHANNEL_1 0
 #define CHANNEL_2 1
-#define MAX_COORD 7 // La coordenada máxima es 7 (para 8x8)
+#define MAX_COORD 7 // La coordenada maxima es 7 (para 8x8)
 
 uint16_t Promedio(uint8_t channel);
 
 int main(void)
 {
-	// Configuración inicial de pines y periféricos
+	// Configuracion inicial de pines y perifericos
 	DDRD &= ~(1 << BOTON_PIN); // D2 como entrada
 	PORTD |= (1 << BOTON_PIN);  // Pull-up en D2
 	ADC_Init();
 	initLEDs();
 	
 	// Semilla para rand() usando el ADC
-	// Asegura una semilla diferente en cada encendido
 	srand(ADC_read(CHANNEL_1));
 	
-	// Coordenadas: Usar int8_t para evitar el desbordamiento de uint8_t al decrementar
 	int8_t x = 3;
 	int8_t y = 3;
 	uint16_t joy_x, joy_y;
@@ -37,8 +35,6 @@ int main(void)
 		// Leer y promediar los valores del joystick
 		joy_x = Promedio(CHANNEL_1);
 		joy_y = Promedio(CHANNEL_2);
-		
-		// **[INICIO: LÓGICA DE MOVIMIENTO CORREGIDA]**
 		
 		// Eje X: Derecha
 		if (joy_x >= 950 && x < MAX_COORD)
@@ -53,7 +49,7 @@ int main(void)
 			setMatrix(0,0,0);
 		}
 
-		// Eje Y: Abajo (Asumiendo que 950 es Abajo y 100 es Arriba)
+		// Eje Y: Abajo 
 		if (joy_y >= 950 && y < MAX_COORD)
 		{
 			y++;
@@ -68,30 +64,25 @@ int main(void)
 
 		if (!(PIND & (1 << BOTON_PIN)))
 		{
-			// Debounce (esperar que el rebote del botón se asiente)
+			// Debounce 
 			_delay_ms(50);
 			
-			// Generar colores aleatorios (valores hasta 200, ya que r/g/b son 0-255)
+			// Generar colores aleatorios 
 			r = rand() % 200;
 			g = rand() % 200;
 			b = rand() % 200;
 		}
 		
-		// 1. Borrar toda la matriz (asumiendo que setMatrix(0,0,0) hace esto)
-		// **REEMPLAZA setMatrix(0,0,0) POR TU FUNCIÓN DE BORRADO DE MATRIZ**
-		// Si no tienes una función de borrado, aquí debería ir el código para apagar todos los LEDs.
-
-		// 2. Calcular índice lineal y dibujar el punto
-		uint8_t led_index = (y * 8) + x; // CÁLCULO DE ÍNDICE CORREGIDO
+		uint8_t led_index = (y * 8) + x; 
 		setLedRGB(leds, led_index, r, g ,b);
 		show(leds);
 		
-		// Pequeño retraso para limitar la velocidad de movimiento
+		// PequeÃ±o retraso para limitar la velocidad de movimiento
 		_delay_ms(50);
 	}
 }
 
-// La función Promedio es correcta y eficiente
+// La funcion Promedio es correcta y eficiente
 uint16_t Promedio(uint8_t channel){
 	uint16_t Resultado = 0;
 	
@@ -101,7 +92,7 @@ uint16_t Promedio(uint8_t channel){
 		_delay_ms(20); 
 	}
 	
-	// División por 16 (promedio) usando desplazamiento de bits (más rápido)
+	// Division por 16  usando desplazamiento de bits 
 	uint16_t ResultadoFinal = (uint16_t)(Resultado >> 4);
 	return ResultadoFinal;
 }
